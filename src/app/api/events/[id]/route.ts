@@ -5,10 +5,10 @@ import Event from "@/models/Event";
 
 export async function DELETE(
   request: NextRequest,
-  context: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ): Promise<NextResponse> {
   await dbConnect();
-  const { id } = context.params;
+  const { id } = (await context.params);
   try {
     const deletedEvent = await Event.findByIdAndDelete(id);
     if (!deletedEvent) {
@@ -29,10 +29,10 @@ export async function DELETE(
 
 export async function PATCH(
   request: NextRequest,
-  context: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ): Promise<NextResponse> {
   await dbConnect();
-  const { id } = context.params;
+  const { id } = (await context.params);
   const { isCompleted } = await request.json();
   try {
     const updatedEvent = await Event.findByIdAndUpdate(
