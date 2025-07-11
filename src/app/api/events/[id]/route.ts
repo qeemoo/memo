@@ -1,22 +1,19 @@
-import { NextResponse } from "next/server";
+// src/app/api/events/[id]/route.ts (재확인용)
+import { NextRequest, NextResponse } from "next/server";
 import dbConnect from "@/lib/mongodb";
 import Event from "@/models/Event";
 
-// 특정 일정 삭제 (DELETE)
 export async function DELETE(
-  _request: Request,
-  { params }: { params: { id: string } }
-) {
+  request: NextRequest,
+  context: { params: { id: string } }
+): Promise<NextResponse> {
   await dbConnect();
-  const { id } = params;
-
+  const { id } = context.params;
   try {
     const deletedEvent = await Event.findByIdAndDelete(id);
-
     if (!deletedEvent) {
       return NextResponse.json({ message: "Event not found" }, { status: 404 });
     }
-
     return NextResponse.json(
       { message: "Event deleted successfully", deletedEvent },
       { status: 200 }
@@ -30,26 +27,22 @@ export async function DELETE(
   }
 }
 
-// 특정 일정 업데이트 (PATCH - isCompleted 상태 업데이트용)
 export async function PATCH(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+  request: NextRequest,
+  context: { params: { id: string } }
+): Promise<NextResponse> {
   await dbConnect();
-  const { id } = params;
+  const { id } = context.params;
   const { isCompleted } = await request.json();
-
   try {
     const updatedEvent = await Event.findByIdAndUpdate(
       id,
       { isCompleted },
       { new: true }
     );
-
     if (!updatedEvent) {
       return NextResponse.json({ message: "Event not found" }, { status: 404 });
     }
-
     return NextResponse.json(
       { message: "Event updated successfully", updatedEvent },
       { status: 200 }
