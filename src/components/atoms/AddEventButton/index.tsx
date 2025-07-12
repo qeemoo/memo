@@ -1,16 +1,21 @@
 "use client";
 
 interface AddEventButtonProps {
-  onClick: () => void; // 클릭 이벤트 핸들러 추가
+  onClick: () => void;
+  positioning?: "fixed" | "centered";
 }
 
-export default function AddEventButton({ onClick }: AddEventButtonProps) {
+export default function AddEventButton({ onClick, positioning = "fixed" }: AddEventButtonProps) {
+  const buttonClasses = positioning === "fixed"
+    ? "fixed top-6 right-6 z-50"
+    : "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2";
+
   return (
-    <div className="fixed top-6 right-6 z-50">
+    <div className={buttonClasses}>
       <button
-        onClick={onClick} // onClick 핸들러 연결
+        onClick={onClick}
         className="flex items-center justify-center w-14 h-14 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg transition-transform transform hover:scale-105
-                   focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75"
+                   focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75 cursor-pointer"
         aria-label="Add new event"
       >
         <svg

@@ -1,7 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import ConfirmationModal from "../common/ConfirmationModal";
+import ConfirmationModal from "@/src/components/organisms/ConfirmationModal";
+
+import { EventType } from "@/src/types";
 
 interface EventListItemProps {
   id: string;
@@ -9,6 +11,8 @@ interface EventListItemProps {
   isCompleted: boolean;
   onDelete: (id: string) => void;
   onToggleComplete: (id: string, newCompletedState: boolean) => void;
+  onEdit: (event: EventType) => void;
+  event: EventType;
 }
 
 export default function EventListItem({
@@ -17,6 +21,8 @@ export default function EventListItem({
   isCompleted,
   onDelete,
   onToggleComplete,
+  onEdit,
+  event,
 }: EventListItemProps) {
   const [isDeleting, setIsDeleting] = useState(false);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
@@ -26,7 +32,8 @@ export default function EventListItem({
     setLocalIsCompleted(isCompleted);
   }, [isCompleted]);
 
-  const handleToggleComplete = async () => {
+  const handleToggleComplete = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.stopPropagation();
     const previousCompletedState = localIsCompleted;
     const newCompletedState = !localIsCompleted;
     setLocalIsCompleted(newCompletedState);
@@ -93,14 +100,15 @@ export default function EventListItem({
       } else {
         alert("일정 삭제 중 알 수 없는 오류가 발생했습니다.");
       }
-    } finally {
+    }
+  finally {
       setIsDeleting(false);
     }
   };
 
   return (
     <div
-      className={`flex items-center p-4 rounded-lg shadow mb-4 ${
+      className={`flex items-center p-4 rounded-lg shadow ${
         localIsCompleted ? "bg-red-50" : "bg-blue-50"
       }`}
     >
@@ -145,9 +153,19 @@ export default function EventListItem({
         {title}
       </span>
       <button
+        onClick={() => onEdit(event)}
+        className="ml-4 p-2 text-gray-500 hover:text-gray-700 rounded-md flex items-center justify-center
+                   transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-75 cursor-pointer"
+        aria-label={`Edit event: ${title}`}
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+        </svg>
+      </button>
+      <button
         onClick={handleOpenConfirmModal}
-        className="ml-4 p-2 bg-red-500 hover:bg-red-600 text-white rounded-md flex items-center justify-center
-                   transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75"
+        className="ml-2 p-2 text-red-500 hover:text-red-600 rounded-md flex items-center justify-center
+                   transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75 cursor-pointer"
         disabled={isDeleting}
         aria-label={`Delete event: ${title}`}
       >

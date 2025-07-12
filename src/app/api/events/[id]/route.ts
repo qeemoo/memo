@@ -1,7 +1,7 @@
-// src/app/api/events/[id]/route.ts (재확인용)
+
 import { NextRequest, NextResponse } from "next/server";
-import dbConnect from "@/lib/mongodb";
-import Event from "@/models/Event";
+import dbConnect from "@/src/utils/mongodb";
+import Event from "@/src/models/Event";
 
 export async function DELETE(
   request: NextRequest,
@@ -33,11 +33,11 @@ export async function PATCH(
 ): Promise<NextResponse> {
   await dbConnect();
   const { id } = (await context.params);
-  const { isCompleted } = await request.json();
+  const body = await request.json();
   try {
     const updatedEvent = await Event.findByIdAndUpdate(
       id,
-      { isCompleted },
+      body,
       { new: true }
     );
     if (!updatedEvent) {

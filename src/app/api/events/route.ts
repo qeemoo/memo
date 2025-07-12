@@ -1,12 +1,12 @@
-// src/app/api/events/route.ts
+
 import { NextResponse } from "next/server";
-import dbConnect from "@/lib/mongodb";
-import Event from "@/models/Event";
+import dbConnect from "@/src/utils/mongodb";
+import Event from "@/src/models/Event";
 
 export async function GET() {
   await dbConnect();
   try {
-    // 모든 필드를 가져오므로 isCompleted도 포함됨
+    
     const events = await Event.find({});
     return NextResponse.json(events, { status: 200 });
   } catch (error) {

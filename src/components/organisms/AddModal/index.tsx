@@ -1,30 +1,33 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import DatePicker from "react-datepicker";
 
 interface AddEventModalProps {
   isOpen: boolean;
   onClose: () => void;
   onEventAdded: () => void;
+  initialDate?: Date;
 }
 
 export default function AddEventModal({
   isOpen,
   onClose,
   onEventAdded,
+  initialDate,
 }: AddEventModalProps) {
   const [title, setTitle] = useState("");
-  const [selectedDate, setSelectedDate] = useState<string>(
-    new Date().toISOString().split("T")[0]
+  const [selectedDate, setSelectedDate] = useState<Date | null>(
+    initialDate || new Date()
   );
   const modalContentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (isOpen) {
       setTitle("");
-      setSelectedDate(new Date().toISOString().split("T")[0]);
+      setSelectedDate(initialDate || new Date());
     }
-  }, [isOpen]);
+  }, [isOpen, initialDate]);
 
   useEffect(() => {
     const handleEscapeKey = (e: KeyboardEvent) => {
@@ -49,7 +52,7 @@ export default function AddEventModal({
     }
 
     try {
-      const startDate = new Date(selectedDate);
+      const startDate = selectedDate;
       const endDate = new Date(selectedDate);
       endDate.setHours(23, 59, 59, 999);
 
@@ -142,27 +145,45 @@ export default function AddEventModal({
             >
               날짜 선택
             </label>
-            <input
-              type="date"
-              id="date"
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              value={selectedDate}
-              onChange={(e) => setSelectedDate(e.target.value)}
-              required
-            />
+            <div className="relative w-full">
+              <DatePicker
+                selected={selectedDate}
+                onChange={(date: Date | null) => setSelectedDate(date)}
+                dateFormat="yyyy-MM-dd"
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline pr-10"
+                wrapperClassName="w-full"
+                calendarClassName="modern-datepicker"
+              />
+              <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                <svg
+                  className="h-5 w-5 text-gray-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                  ></path>
+                </svg>
+              </div>
+            </div>
           </div>
 
           <div className="flex items-center justify-end">
             <button
               type="button"
               onClick={onClose}
-              className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2"
+              className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2 cursor-pointer"
             >
               취소
             </button>
             <button
               type="submit"
-              className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline cursor-pointer"
             >
               확인
             </button>
