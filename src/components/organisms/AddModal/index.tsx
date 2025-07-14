@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import DatePicker from "react-datepicker";
+import { ADD_MODAL } from "@/constants/messages";
 
 interface AddEventModalProps {
   isOpen: boolean;
@@ -47,7 +48,7 @@ export default function AddEventModal({
     e.preventDefault();
 
     if (!title.trim() || !selectedDate) {
-      alert("할 일과 날짜를 입력해주세요.");
+      alert(ADD_MODAL.VALIDATION_ERROR);
       return;
     }
 
@@ -70,7 +71,7 @@ export default function AddEventModal({
       });
 
       if (!response.ok) {
-        let errorMessage = "일정 추가에 실패했습니다.";
+        let errorMessage = ADD_MODAL.ADD_FAILURE;
         try {
           const errorData = await response.json();
           if (errorData.message) {
@@ -86,11 +87,11 @@ export default function AddEventModal({
       onEventAdded();
       onClose();
     } catch (error) {
-      console.error("일정 추가 중 오류 발생:", error);
+      console.error(ADD_MODAL.ADD_ERROR, error);
       if (error instanceof Error) {
-        alert(`일정 추가 중 오류가 발생했습니다: ${error.message}`);
+        alert(ADD_MODAL.ADD_ERROR_ALERT(error.message));
       } else {
-        alert("일정 추가 중 알 수 없는 오류가 발생했습니다.");
+        alert(ADD_MODAL.UNKNOWN_ADD_ERROR);
       }
     }
   };
@@ -117,7 +118,7 @@ export default function AddEventModal({
         onClick={(e) => e.stopPropagation()}
       >
         <h2 className="text-2xl font-bold mb-6 text-gray-800 text-center">
-          새 일정 추가
+          {ADD_MODAL.TITLE}
         </h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
@@ -125,7 +126,7 @@ export default function AddEventModal({
               htmlFor="title"
               className="block text-gray-700 text-sm font-bold mb-2"
             >
-              할 일
+              {ADD_MODAL.TODO_LABEL}
             </label>
             <input
               type="text"
@@ -133,7 +134,7 @@ export default function AddEventModal({
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="예: 팀 회의 준비"
+              placeholder={ADD_MODAL.TODO_PLACEHOLDER}
               required
             />
           </div>
@@ -143,7 +144,7 @@ export default function AddEventModal({
               htmlFor="date"
               className="block text-gray-700 text-sm font-bold mb-2"
             >
-              날짜 선택
+              {ADD_MODAL.DATE_LABEL}
             </label>
             <div className="relative w-full">
               <DatePicker
@@ -179,13 +180,13 @@ export default function AddEventModal({
               onClick={onClose}
               className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2 cursor-pointer"
             >
-              취소
+              {ADD_MODAL.CANCEL_BUTTON}
             </button>
             <button
               type="submit"
               className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline cursor-pointer"
             >
-              확인
+              {ADD_MODAL.CONFIRM_BUTTON}
             </button>
           </div>
         </form>

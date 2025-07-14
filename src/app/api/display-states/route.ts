@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import dbConnect from '@/src/utils/mongodb';
-import DayDisplayState from '@/src/models/DayDisplayState';
+import dbConnect from "@/utils/mongodb";
+import DayDisplayState from "@/models/DayDisplayState";
 
 export async function GET() {
   await dbConnect();

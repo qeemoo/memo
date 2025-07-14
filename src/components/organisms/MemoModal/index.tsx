@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useEffect } from "react";
+import { MEMO_MODAL } from "@/constants/messages";
 
 interface MemoModalProps {
   isOpen: boolean;
@@ -44,7 +45,7 @@ export default function MemoModal({
         className="w-full h-full flex-grow p-4 text-gray-700 leading-tight focus:outline-none resize-none overflow-y-auto border-none focus:ring-0"
         value={memoContent}
         onChange={(e) => setMemoContent(e.target.value)}
-        placeholder="메모를 작성하세요..."
+        placeholder={MEMO_MODAL.PLACEHOLDER}
       ></textarea>
     </div>
   );

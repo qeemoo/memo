@@ -1,7 +1,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
-import dbConnect from "@/src/utils/mongodb";
-import Event from "@/src/models/Event";
+import dbConnect from "@/utils/mongodb";
+import Event from "@/models/Event";
 
 export async function DELETE(
   request: NextRequest,

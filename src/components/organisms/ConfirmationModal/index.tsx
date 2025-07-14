@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useEffect } from "react";
+import { CONFIRMATION_MODAL } from "@/constants/messages";
 
 interface ConfirmationModalProps {
   isOpen: boolean;
@@ -16,8 +17,8 @@ export default function ConfirmationModal({
   onClose,
   onConfirm,
   message,
-  confirmText = "삭제",
-  cancelText = "취소",
+  confirmText = CONFIRMATION_MODAL.DELETE_BUTTON,
+  cancelText = CONFIRMATION_MODAL.CANCEL_BUTTON,
 }: ConfirmationModalProps) {
   const modalContentRef = useRef<HTMLDivElement>(null);
 
@@ -57,7 +58,7 @@ export default function ConfirmationModal({
         onClick={(e) => e.stopPropagation()}
       >
         <h3 className="text-xl font-bold mb-4 text-gray-800 text-center">
-          확인
+          {CONFIRMATION_MODAL.TITLE}
         </h3>
         <p className="text-gray-700 text-center mb-6">{message}</p>
 

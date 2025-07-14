@@ -1,9 +1,10 @@
+
 "use client";
 
 import { useState, useEffect } from "react";
-import ConfirmationModal from "@/src/components/organisms/ConfirmationModal";
-
-import { EventType } from "@/src/types";
+import ConfirmationModal from "@/components/organisms/ConfirmationModal";
+import { EVENT_LIST_ITEM } from "@/constants/messages";
+import { EventType } from "@/types";
 
 interface EventListItemProps {
   id: string;
@@ -50,17 +51,17 @@ export default function EventListItem({
       if (!response.ok) {
         setLocalIsCompleted(previousCompletedState);
         const errorData = await response.json();
-        throw new Error(errorData.message || "상태 업데이트에 실패했습니다.");
+        throw new Error(errorData.message || EVENT_LIST_ITEM.STATUS_UPDATE_FAILURE);
       }
 
       onToggleComplete(id, newCompletedState);
     } catch (error) {
-      console.error("일정 상태 업데이트 중 오류 발생:", error);
+      console.error(EVENT_LIST_ITEM.STATUS_UPDATE_ERROR, error);
       setLocalIsCompleted(previousCompletedState);
       if (error instanceof Error) {
-        alert(`상태 업데이트 중 오류가 발생했습니다: ${error.message}`);
+        alert(EVENT_LIST_ITEM.STATUS_UPDATE_ERROR_ALERT(error.message));
       } else {
-        alert("상태 업데이트 중 알 수 없는 오류가 발생했습니다.");
+        alert(EVENT_LIST_ITEM.UNKNOWN_STATUS_UPDATE_ERROR);
       }
     }
   };
@@ -82,7 +83,7 @@ export default function EventListItem({
       });
 
       if (!response.ok) {
-        let errorMessage = "일정 삭제에 실패했습니다.";
+        let errorMessage = EVENT_LIST_ITEM.DELETE_FAILURE;
         try {
           const errorData = await response.json();
           if (errorData.message) {
@@ -94,11 +95,11 @@ export default function EventListItem({
 
       onDelete(id);
     } catch (error) {
-      console.error("일정 삭제 중 오류 발생:", error);
+      console.error(EVENT_LIST_ITEM.DELETE_ERROR, error);
       if (error instanceof Error) {
-        alert(`일정 삭제 중 오류가 발생했습니다: ${error.message}`);
+        alert(EVENT_LIST_ITEM.DELETE_ERROR_ALERT(error.message));
       } else {
-        alert("일정 삭제 중 알 수 없는 오류가 발생했습니다.");
+        alert(EVENT_LIST_ITEM.UNKNOWN_DELETE_ERROR);
       }
     }
   finally {
@@ -212,7 +213,7 @@ export default function EventListItem({
         isOpen={isConfirmModalOpen}
         onClose={handleCloseConfirmModal}
         onConfirm={handleDeleteConfirmed}
-        message={`"${title}" 일정을 정말로 삭제하시겠습니까?`}
+        message={EVENT_LIST_ITEM.CONFIRM_DELETE(title)}
       />
     </div>
   );

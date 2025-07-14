@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { TOAST_TYPES } from "@/constants/messages";
 
 interface ToastProps {
   message: string;
@@ -22,11 +23,11 @@ export default function Toast({ message, type, onClose }: ToastProps) {
 
   const getColors = () => {
     switch (type) {
-      case "success": // 일정 추가 (파란색)
+      case TOAST_TYPES.SUCCESS:
         return { bgColor: "bg-blue-100", textColor: "text-blue-800" };
-      case "error": // 일정 삭제 (빨간색)
+      case TOAST_TYPES.ERROR:
         return { bgColor: "bg-red-100", textColor: "text-red-800" };
-      case "info": // 일정 수정 체크 (초록색)
+      case TOAST_TYPES.INFO:
         return { bgColor: "bg-green-100", textColor: "text-green-800" };
       default:
         return { bgColor: "bg-gray-100", textColor: "text-gray-800" };

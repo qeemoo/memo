@@ -1,17 +1,22 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import AddEventButton from "@/src/components/atoms/AddEventButton";
-import CalendarDayHeader from "@/src/components/molecules/CalendarDayHeader";
-import EventListItem from "@/src/components/molecules/EventListItem";
-import AddEventModal from "@/src/components/organisms/AddModal";
-import AddEventInlineButton from "@/src/components/atoms/AddEventInlineButton";
-import EditEventModal from "@/src/components/organisms/EditModal";
-import Toast from "@/src/components/atoms/Toast";
-import MemoButton from "@/src/components/atoms/MemoButton";
-import MemoModal from "@/src/components/organisms/MemoModal";
+import AddEventButton from "@/components/atoms/AddEventButton";
+import CalendarDayHeader from "@/components/molecules/CalendarDayHeader";
+import EventListItem from "@/components/molecules/EventListItem";
+import AddEventModal from "@/components/organisms/AddModal";
+import AddEventInlineButton from "@/components/atoms/AddEventInlineButton";
+import EditEventModal from "@/components/organisms/EditModal";
+import Toast from "@/components/atoms/Toast";
+import MemoButton from "@/components/atoms/MemoButton";
+import MemoModal from "@/components/organisms/MemoModal";
 
-import { EventType } from "@/src/types";
+import ChevronRightIcon from "@/components/atoms/Icons/ChevronRightIcon";
+import ChevronDownIcon from "@/components/atoms/Icons/ChevronDownIcon";
+import LoadingSpinner from "@/components/atoms/Icons/LoadingSpinner";
+
+import { TOAST_MESSAGES, ADD_MODAL } from "@/constants/messages";
+import { EventType } from "@/types";
 
 export default function HomePage() {
   const [events, setEvents] = useState<EventType[]>([]);
@@ -57,12 +62,12 @@ export default function HomePage() {
         body: JSON.stringify({ date: dateKey, isCollapsed: newCollapsedState }),
       });
       if (!response.ok) {
-        console.error("Failed to update display state on backend");
-        showToast("표시 상태 업데이트에 실패했습니다.", "error");
+        console.error(TOAST_MESSAGES.DISPLAY_STATE_UPDATE_FAILURE);
+        showToast(TOAST_MESSAGES.DISPLAY_STATE_UPDATE_FAILURE, "error");
       }
     } catch (error) {
-      console.error("Error updating display state:", error);
-      showToast("표시 상태 업데이트 중 오류 발생.", "error");
+      console.error(TOAST_MESSAGES.DISPLAY_STATE_UPDATE_ERROR, error);
+      showToast(TOAST_MESSAGES.DISPLAY_STATE_UPDATE_ERROR, "error");
     }
   };
 
@@ -100,7 +105,7 @@ export default function HomePage() {
         }
       }
     } catch (error) {
-      console.error("Error fetching memo:", error);
+      console.error(TOAST_MESSAGES.MEMO_FETCH_ERROR, error);
     }
   }, [setMemoContent]);
 
@@ -116,13 +121,13 @@ export default function HomePage() {
       });
       if (response.ok) {
         setMemoContent(content);
-        showToast("메모가 성공적으로 저장되었습니다.", "info");
+        showToast(TOAST_MESSAGES.MEMO_SAVE_SUCCESS, "info");
       } else {
-        showToast("메모 저장에 실패했습니다.", "error");
+        showToast(TOAST_MESSAGES.MEMO_SAVE_FAILURE, "error");
       }
     } catch (error) {
       console.error("Error saving memo:", error);
-      showToast("메모 저장 중 오류 발생.", "error");
+      showToast(TOAST_MESSAGES.MEMO_SAVE_ERROR, "error");
     }
   }, [setMemoContent, showToast]);
 
@@ -136,7 +141,7 @@ export default function HomePage() {
           setCollapsedStates(data);
         }
       } catch (error) {
-        console.error("Error fetching initial display states:", error);
+        console.error(TOAST_MESSAGES.INITIAL_DISPLAY_STATE_FETCH_ERROR, error);
       }
     };
     fetchInitialData();
@@ -158,14 +163,14 @@ export default function HomePage() {
 
   const handleEventAdded = () => {
     fetchEvents();
-    showToast("일정이 성공적으로 추가되었습니다.", "success");
+    showToast(TOAST_MESSAGES.EVENT_ADD_SUCCESS, "success");
   };
 
   const handleDeleteEvent = (deletedId: string) => {
     setEvents((prevEvents) =>
       prevEvents.filter((event) => event._id !== deletedId)
     );
-    showToast("일정이 성공적으로 삭제되었습니다.", "error");
+    showToast(TOAST_MESSAGES.EVENT_DELETE_SUCCESS, "error");
   };
 
   const handleToggleCompleteEvent = (
@@ -177,7 +182,7 @@ export default function HomePage() {
         event._id === id ? { ...event, isCompleted: newCompletedState } : event
       )
     );
-    showToast("일정 상태가 업데이트되었습니다.", "info");
+    showToast(TOAST_MESSAGES.EVENT_UPDATE_SUCCESS, "info");
   };
 
   const handleEditClick = (event: EventType) => {
@@ -187,7 +192,7 @@ export default function HomePage() {
 
   const handleEventUpdated = () => {
     fetchEvents();
-    showToast("일정이 성공적으로 수정되었습니다.", "info");
+    showToast(TOAST_MESSAGES.EVENT_EDIT_SUCCESS, "info");
   };
 
   const handleMemoButtonClick = async () => {
@@ -224,8 +229,8 @@ export default function HomePage() {
     return (
       <main className="flex-grow container mx-auto px-4 py-8 max-w-2xl text-center flex items-center justify-center h-screen">
         <div className="flex flex-col items-center space-y-4">
-          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500"></div>
-          <p className="text-xl text-gray-700">일정을 불러오는 중입니다...</p>
+          <LoadingSpinner />
+          <p className="text-xl text-gray-700">{TOAST_MESSAGES.EVENTS_LOADING}</p>
         </div>
       </main>
     );
@@ -234,7 +239,7 @@ export default function HomePage() {
   if (error) {
     return (
       <main className="flex-grow container mx-auto px-4 py-8 max-w-2xl text-center">
-        <p className="text-xl text-red-600">오류 발생: {error}</p>
+        <p className="text-xl text-red-600">{TOAST_MESSAGES.EVENTS_LOAD_ERROR} {error}</p>
       </main>
     );
   }
@@ -255,16 +260,12 @@ export default function HomePage() {
                 <button
                   onClick={() => handleToggleCollapse(dateKey)}
                   className="text-gray-500 hover:text-gray-700 focus:outline-none p-1 rounded-full hover:bg-gray-100 transition-colors cursor-pointer"
-                  aria-label={collapsedStates[dateKey] ? 'Show events' : 'Hide events'}
+                  aria-label={collapsedStates[dateKey] ? ADD_MODAL.SHOW_EVENTS : ADD_MODAL.HIDE_EVENTS}
                 >
                   {collapsedStates[dateKey] ? (
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
-                    </svg>
+                    <ChevronRightIcon className="h-5 w-5" />
                   ) : (
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
-                    </svg>
+                    <ChevronDownIcon className="h-5 w-5" />
                   )}
                 </button>
               </div>
@@ -283,7 +284,7 @@ export default function HomePage() {
                 ))}
                 {groupedEvents[dateKey].length === 0 && (
                   <div className="p-4 text-center text-gray-400 border border-dashed border-gray-300 rounded-lg">
-                    일정이 없습니다.
+                    {TOAST_MESSAGES.NO_EVENTS}
                   </div>
                 )}
               </div>
