@@ -104,9 +104,10 @@ export default function HomePage() {
         />
       )}
 
-      {sortedDates.length > 0 ? (
+      {!loading && sortedDates.length > 0 && (
         <AddEventButton onClick={() => handleAddButtonClick(undefined)} positioning="fixed" />
-      ) : (
+      )}
+      {!loading && sortedDates.length === 0 && (
         <AddEventButton onClick={() => handleAddButtonClick(undefined)} positioning="centered" />
       )}
 
