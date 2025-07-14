@@ -1,9 +1,12 @@
-"use client";
+'use client';
 
-import { useState, useRef, useEffect } from "react";
-import DatePicker from "react-datepicker";
-import { EDIT_MODAL } from "@/constants/messages";
-import { EventType } from "@/types";
+import { EventType } from '@/types';
+import DatePicker from 'react-datepicker';
+
+import { useEffect, useRef, useState } from 'react';
+
+import { EDIT_MODAL } from '@/constants/messages';
+import { MODAL_CLASSES } from '@/constants/styles';
 
 interface EditEventModalProps {
   isOpen: boolean;
@@ -19,9 +22,7 @@ export default function EditEventModal({
   event,
 }: EditEventModalProps) {
   const [title, setTitle] = useState(event.title);
-  const [selectedDate, setSelectedDate] = useState<Date | null>(
-    new Date(event.startDate)
-  );
+  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date(event.startDate));
   const modalContentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -33,15 +34,15 @@ export default function EditEventModal({
 
   useEffect(() => {
     const handleEscapeKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
+      if (e.key === 'Escape') {
         onClose();
       }
     };
     if (isOpen) {
-      document.addEventListener("keydown", handleEscapeKey);
+      document.addEventListener('keydown', handleEscapeKey);
     }
     return () => {
-      document.removeEventListener("keydown", handleEscapeKey);
+      document.removeEventListener('keydown', handleEscapeKey);
     };
   }, [isOpen, onClose]);
 
@@ -59,9 +60,9 @@ export default function EditEventModal({
       endDate.setHours(23, 59, 59, 999);
 
       const response = await fetch(`/api/events/${event._id}`, {
-        method: "PATCH",
+        method: 'PATCH',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           title,
@@ -83,7 +84,7 @@ export default function EditEventModal({
       }
 
       const updatedEvent = await response.json();
-      console.log("일정 수정 완료:", updatedEvent);
+      console.log('일정 수정 완료:', updatedEvent);
 
       onEventUpdated();
       onClose();
@@ -98,10 +99,7 @@ export default function EditEventModal({
   };
 
   const handleBackdropClick = (e: React.MouseEvent) => {
-    if (
-      modalContentRef.current &&
-      !modalContentRef.current.contains(e.target as Node)
-    ) {
+    if (modalContentRef.current && !modalContentRef.current.contains(e.target as Node)) {
       onClose();
     }
   };
@@ -109,30 +107,22 @@ export default function EditEventModal({
   if (!isOpen) return null;
 
   return (
-    <div
-      className="fixed inset-0 flex items-center justify-center p-4 z-[100]"
-      onClick={handleBackdropClick}
-    >
+    <div className={MODAL_CLASSES.OVERLAY} onClick={handleBackdropClick}>
       <div
         ref={modalContentRef}
-        className="bg-white rounded-lg shadow-xl w-full max-w-md p-6 relative transform transition-all duration-300 scale-100 opacity-100 border border-gray-400"
+        className={MODAL_CLASSES.CONTAINER}
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 className="text-2xl font-bold mb-6 text-gray-800 text-center">
-          {EDIT_MODAL.TITLE}
-        </h2>
+        <h2 className={MODAL_CLASSES.TITLE}>{EDIT_MODAL.TITLE}</h2>
         <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label
-              htmlFor="title"
-              className="block text-gray-700 text-sm font-bold mb-2"
-            >
+          <div className={MODAL_CLASSES.FORM_GROUP_MB4}>
+            <label htmlFor="title" className={MODAL_CLASSES.LABEL}>
               {EDIT_MODAL.TODO_LABEL}
             </label>
             <input
               type="text"
               id="title"
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className={MODAL_CLASSES.INPUT}
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder={EDIT_MODAL.TODO_PLACEHOLDER}
@@ -140,25 +130,22 @@ export default function EditEventModal({
             />
           </div>
 
-          <div className="mb-6">
-            <label
-              htmlFor="date"
-              className="block text-gray-700 text-sm font-bold mb-2"
-            >
+          <div className={MODAL_CLASSES.FORM_GROUP_MB6}>
+            <label htmlFor="date" className={MODAL_CLASSES.LABEL}>
               {EDIT_MODAL.DATE_LABEL}
             </label>
-            <div className="relative w-full">
+            <div className={MODAL_CLASSES.DATEPICKER_CONTAINER}>
               <DatePicker
                 selected={selectedDate}
                 onChange={(date: Date | null) => setSelectedDate(date)}
                 dateFormat="yyyy-MM-dd"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline pr-10"
-                wrapperClassName="w-full"
-                calendarClassName="modern-datepicker"
+                className={MODAL_CLASSES.DATEPICKER_INPUT}
+                wrapperClassName={MODAL_CLASSES.DATEPICKER_WRAPPER}
+                calendarClassName={MODAL_CLASSES.DATEPICKER_CALENDAR}
               />
-              <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+              <div className={MODAL_CLASSES.DATEPICKER_ICON_CONTAINER}>
                 <svg
-                  className="h-5 w-5 text-gray-400"
+                  className={MODAL_CLASSES.DATEPICKER_ICON}
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -175,18 +162,11 @@ export default function EditEventModal({
             </div>
           </div>
 
-          <div className="flex items-center justify-end">
-            <button
-              type="button"
-              onClick={onClose}
-              className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2 cursor-pointer"
-            >
+          <div className={MODAL_CLASSES.BUTTON_CONTAINER}>
+            <button type="button" onClick={onClose} className={MODAL_CLASSES.CANCEL_BUTTON}>
               {EDIT_MODAL.CANCEL_BUTTON}
             </button>
-            <button
-              type="submit"
-              className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline cursor-pointer"
-            >
+            <button type="submit" className={MODAL_CLASSES.CONFIRM_BUTTON}>
               {EDIT_MODAL.CONFIRM_BUTTON}
             </button>
           </div>

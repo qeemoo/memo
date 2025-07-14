@@ -1,4 +1,6 @@
-"use client";
+'use client';
+
+import { MEMO_BUTTON_CLASSES } from '@/constants/styles';
 
 interface MemoButtonProps {
   onClick: () => void;
@@ -6,16 +8,11 @@ interface MemoButtonProps {
 
 export default function MemoButton({ onClick }: MemoButtonProps) {
   return (
-    <div className="fixed bottom-6 right-6 z-50">
-      <button
-        onClick={onClick}
-        className="flex items-center justify-center w-14 h-14 bg-yellow-300 hover:bg-yellow-400 text-gray-800 rounded-full shadow-lg transition-transform transform hover:scale-105 cursor-pointer
-                   focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-75"
-        aria-label="Open memo"
-      >
+    <div className={MEMO_BUTTON_CLASSES.CONTAINER}>
+      <button onClick={onClick} className={MEMO_BUTTON_CLASSES.BUTTON_BASE} aria-label="Open memo">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="h-8 w-8"
+          className={MEMO_BUTTON_CLASSES.ICON}
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"

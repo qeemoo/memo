@@ -18,6 +18,8 @@ const DayDisplayStateSchema: Schema = new Schema({
   },
 });
 
-const DayDisplayState = mongoose.models.DayDisplayState || mongoose.model<IDayDisplayState>('DayDisplayState', DayDisplayStateSchema);
+const DayDisplayState =
+  mongoose.models.DayDisplayState ||
+  mongoose.model<IDayDisplayState>('DayDisplayState', DayDisplayStateSchema);
 
 export default DayDisplayState;

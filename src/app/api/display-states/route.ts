@@ -1,13 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
-import dbConnect from "@/utils/mongodb";
-import DayDisplayState from "@/models/DayDisplayState";
+
+import DayDisplayState from '@/models/DayDisplayState';
+
+import dbConnect from '@/utils/mongodb';
 
 export async function GET() {
   await dbConnect();
   try {
     const states = await DayDisplayState.find({});
     const collapsedStates: Record<string, boolean> = {};
-    states.forEach(state => {
+    states.forEach((state) => {
       collapsedStates[state.date] = state.isCollapsed;
     });
     return NextResponse.json(collapsedStates, { status: 200 });
@@ -29,7 +31,7 @@ export async function POST(req: NextRequest) {
     const updatedState = await DayDisplayState.findOneAndUpdate(
       { date },
       { isCollapsed },
-      { upsert: true, new: true }
+      { upsert: true, new: true },
     );
 
     return NextResponse.json(updatedState, { status: 200 });

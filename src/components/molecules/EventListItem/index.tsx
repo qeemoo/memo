@@ -1,10 +1,13 @@
+'use client';
 
-"use client";
+import { EventType } from '@/types';
 
-import { useState, useEffect } from "react";
-import ConfirmationModal from "@/components/organisms/ConfirmationModal";
-import { EVENT_LIST_ITEM } from "@/constants/messages";
-import { EventType } from "@/types";
+import { useEffect, useState } from 'react';
+
+import ConfirmationModal from '@/components/organisms/ConfirmationModal';
+
+import { EVENT_LIST_ITEM } from '@/constants/messages';
+import { EVENT_LIST_ITEM_CLASSES } from '@/constants/styles';
 
 interface EventListItemProps {
   id: string;
@@ -41,9 +44,9 @@ export default function EventListItem({
 
     try {
       const response = await fetch(`/api/events/${id}`, {
-        method: "PATCH",
+        method: 'PATCH',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({ isCompleted: newCompletedState }),
       });
@@ -79,7 +82,7 @@ export default function EventListItem({
     setIsDeleting(true);
     try {
       const response = await fetch(`/api/events/${id}`, {
-        method: "DELETE",
+        method: 'DELETE',
       });
 
       if (!response.ok) {
@@ -101,36 +104,37 @@ export default function EventListItem({
       } else {
         alert(EVENT_LIST_ITEM.UNKNOWN_DELETE_ERROR);
       }
-    }
-  finally {
+    } finally {
       setIsDeleting(false);
     }
   };
 
   return (
     <div
-      className={`flex items-center p-4 rounded-lg shadow ${
-        localIsCompleted ? "bg-red-50" : "bg-blue-50"
+      className={`${EVENT_LIST_ITEM_CLASSES.CONTAINER_BASE} ${
+        localIsCompleted
+          ? EVENT_LIST_ITEM_CLASSES.COMPLETED_BG
+          : EVENT_LIST_ITEM_CLASSES.INCOMPLETE_BG
       }`}
     >
-      <label className="flex items-center cursor-pointer">
+      <label className={EVENT_LIST_ITEM_CLASSES.CHECKBOX_LABEL}>
         <input
           type="checkbox"
           checked={localIsCompleted}
           onChange={handleToggleComplete}
-          className="hidden"
+          className={EVENT_LIST_ITEM_CLASSES.CHECKBOX_INPUT}
         />
         <div
-          className={`w-6 h-6 border-2 rounded flex items-center justify-center transition-all duration-200
+          className={`${EVENT_LIST_ITEM_CLASSES.CHECKBOX_CUSTOM_BASE}
             ${
               localIsCompleted
-                ? "bg-green-500 border-green-500"
-                : "bg-white border-gray-300"
+                ? EVENT_LIST_ITEM_CLASSES.CHECKBOX_COMPLETED
+                : EVENT_LIST_ITEM_CLASSES.CHECKBOX_INCOMPLETE
             }`}
         >
           {localIsCompleted && (
             <svg
-              className="w-4 h-4 text-white"
+              className={EVENT_LIST_ITEM_CLASSES.CHECKBOX_ICON}
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -147,32 +151,43 @@ export default function EventListItem({
         </div>
       </label>
       <span
-        className={`ml-4 text-lg flex-grow ${
-          localIsCompleted ? "line-through text-gray-500" : "text-gray-800"
+        className={`${EVENT_LIST_ITEM_CLASSES.TITLE_BASE} ${
+          localIsCompleted
+            ? EVENT_LIST_ITEM_CLASSES.TITLE_COMPLETED
+            : EVENT_LIST_ITEM_CLASSES.TITLE_INCOMPLETE
         }`}
       >
         {title}
       </span>
       <button
         onClick={() => onEdit(event)}
-        className="ml-4 p-2 text-gray-500 hover:text-gray-700 rounded-md flex items-center justify-center
-                   transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-75 cursor-pointer"
+        className={EVENT_LIST_ITEM_CLASSES.EDIT_BUTTON}
         aria-label={`Edit event: ${title}`}
       >
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className={EVENT_LIST_ITEM_CLASSES.EDIT_BUTTON_ICON}
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth="2"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+          />
         </svg>
       </button>
       <button
         onClick={handleOpenConfirmModal}
-        className="ml-2 p-2 text-red-500 hover:text-red-600 rounded-md flex items-center justify-center
-                   transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75 cursor-pointer"
+        className={EVENT_LIST_ITEM_CLASSES.DELETE_BUTTON}
         disabled={isDeleting}
         aria-label={`Delete event: ${title}`}
       >
         {isDeleting ? (
           <svg
-            className="animate-spin h-5 w-5 text-white"
+            className={EVENT_LIST_ITEM_CLASSES.DELETE_BUTTON_LOADING_SPINNER}
             fill="none"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
@@ -194,7 +209,7 @@ export default function EventListItem({
         ) : (
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5"
+            className={EVENT_LIST_ITEM_CLASSES.DELETE_BUTTON_ICON}
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"

@@ -12,7 +12,7 @@ const MemoSchema: Schema = new Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 const Memo = mongoose.models.Memo || mongoose.model<IMemo>('Memo', MemoSchema);

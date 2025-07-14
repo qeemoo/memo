@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "react-datepicker/dist/react-datepicker.css";
+@import 'tailwindcss';
+@import 'react-datepicker/dist/react-datepicker.css';
 
 /* Custom styles for react-datepicker */
 .react-datepicker__wrapper {
@@ -15,20 +15,20 @@
 }
 
 .react-datepicker {
-  @apply border border-gray-300 rounded-lg shadow-lg;
+  @apply rounded-lg border border-gray-300 shadow-lg;
 }
 
 .react-datepicker__header {
-  @apply bg-gray-100 border-b border-gray-200 rounded-t-lg;
+  @apply rounded-t-lg border-b border-gray-200 bg-gray-100;
 }
 
 .react-datepicker__current-month {
-  @apply text-gray-800 font-semibold;
+  @apply font-semibold text-gray-800;
 }
 
 .react-datepicker__navigation--previous,
 .react-datepicker__navigation--next {
-  @apply text-gray-600 hover:bg-gray-200 rounded-full;
+  @apply rounded-full text-gray-600 hover:bg-gray-200;
 }
 
 .react-datepicker__day-name,
@@ -39,7 +39,7 @@
 
 .react-datepicker__day--selected,
 .react-datepicker__day--keyboard-selected {
-  @apply bg-blue-500 text-white rounded-full;
+  @apply rounded-full bg-blue-500 text-white;
 }
 
 .react-datepicker__day--outside-month {
@@ -47,11 +47,11 @@
 }
 
 .react-datepicker__day:hover {
-  @apply bg-gray-200 rounded-full;
+  @apply rounded-full bg-gray-200;
 }
 
 .react-datepicker__day--disabled {
-  @apply text-gray-300 cursor-not-allowed;
+  @apply cursor-not-allowed text-gray-300;
 }
 
 .react-datepicker__triangle {

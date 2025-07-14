@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import dbConnect from "@/utils/mongodb";
-import Memo from "@/models/Memo";
+
+import Memo from '@/models/Memo';
+
+import dbConnect from '@/utils/mongodb';
 
 export async function GET() {
   await dbConnect();

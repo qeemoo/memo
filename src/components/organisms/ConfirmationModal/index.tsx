@@ -1,7 +1,9 @@
-"use client";
+'use client';
 
-import { useRef, useEffect } from "react";
-import { CONFIRMATION_MODAL } from "@/constants/messages";
+import { useEffect, useRef } from 'react';
+
+import { CONFIRMATION_MODAL } from '@/constants/messages';
+import { CONFIRMATION_MODAL_CLASSES, MODAL_CLASSES } from '@/constants/styles';
 
 interface ConfirmationModalProps {
   isOpen: boolean;
@@ -24,23 +26,20 @@ export default function ConfirmationModal({
 
   useEffect(() => {
     const handleEscapeKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
+      if (e.key === 'Escape') {
         onClose();
       }
     };
     if (isOpen) {
-      document.addEventListener("keydown", handleEscapeKey);
+      document.addEventListener('keydown', handleEscapeKey);
     }
     return () => {
-      document.removeEventListener("keydown", handleEscapeKey);
+      document.removeEventListener('keydown', handleEscapeKey);
     };
   }, [isOpen, onClose]);
 
   const handleBackdropClick = (e: React.MouseEvent) => {
-    if (
-      modalContentRef.current &&
-      !modalContentRef.current.contains(e.target as Node)
-    ) {
+    if (modalContentRef.current && !modalContentRef.current.contains(e.target as Node)) {
       onClose();
     }
   };
@@ -48,32 +47,27 @@ export default function ConfirmationModal({
   if (!isOpen) return null;
 
   return (
-    <div
-      className="fixed inset-0 flex items-center justify-center p-4 z-[100]"
-      onClick={handleBackdropClick}
-    >
+    <div className={MODAL_CLASSES.OVERLAY} onClick={handleBackdropClick}>
       <div
         ref={modalContentRef}
-        className="bg-white rounded-lg shadow-xl w-full max-w-sm p-6 relative transform transition-all duration-300 scale-100 opacity-100 border border-gray-400"
+        className={CONFIRMATION_MODAL_CLASSES.CONTAINER}
         onClick={(e) => e.stopPropagation()}
       >
-        <h3 className="text-xl font-bold mb-4 text-gray-800 text-center">
-          {CONFIRMATION_MODAL.TITLE}
-        </h3>
-        <p className="text-gray-700 text-center mb-6">{message}</p>
+        <h3 className={CONFIRMATION_MODAL_CLASSES.TITLE}>{CONFIRMATION_MODAL.TITLE}</h3>
+        <p className={CONFIRMATION_MODAL_CLASSES.MESSAGE}>{message}</p>
 
-        <div className="flex justify-end gap-3">
+        <div className={CONFIRMATION_MODAL_CLASSES.BUTTON_CONTAINER}>
           <button
             type="button"
             onClick={onClose}
-            className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline cursor-pointer"
+            className={CONFIRMATION_MODAL_CLASSES.CANCEL_BUTTON}
           >
             {cancelText}
           </button>
           <button
             type="button"
             onClick={onConfirm}
-            className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline cursor-pointer"
+            className={CONFIRMATION_MODAL_CLASSES.CONFIRM_BUTTON}
           >
             {confirmText}
           </button>

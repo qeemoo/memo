@@ -1,11 +1,13 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { TOAST_TYPES } from "@/constants/messages";
+import { useEffect, useState } from 'react';
+
+import { TOAST_TYPES } from '@/constants/messages';
+import { TOAST_CLASSES } from '@/constants/styles';
 
 interface ToastProps {
   message: string;
-  type: "success" | "error" | "info";
+  type: 'success' | 'error' | 'info';
   onClose: () => void;
 }
 
@@ -24,13 +26,13 @@ export default function Toast({ message, type, onClose }: ToastProps) {
   const getColors = () => {
     switch (type) {
       case TOAST_TYPES.SUCCESS:
-        return { bgColor: "bg-blue-100", textColor: "text-blue-800" };
+        return { bgColor: 'bg-blue-100', textColor: 'text-blue-800' };
       case TOAST_TYPES.ERROR:
-        return { bgColor: "bg-red-100", textColor: "text-red-800" };
+        return { bgColor: 'bg-red-100', textColor: 'text-red-800' };
       case TOAST_TYPES.INFO:
-        return { bgColor: "bg-green-100", textColor: "text-green-800" };
+        return { bgColor: 'bg-green-100', textColor: 'text-green-800' };
       default:
-        return { bgColor: "bg-gray-100", textColor: "text-gray-800" };
+        return { bgColor: 'bg-gray-100', textColor: 'text-gray-800' };
     }
   };
 
@@ -40,7 +42,7 @@ export default function Toast({ message, type, onClose }: ToastProps) {
 
   return (
     <div
-      className={`fixed top-4 left-1/2 -translate-x-1/2 z-[1000] px-4 py-2 rounded-md shadow-md text-sm flex items-center space-x-2 transition-all duration-300 transform ${bgColor} ${textColor} ${isVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}`}
+      className={`${TOAST_CLASSES.CONTAINER} ${bgColor} ${textColor} ${isVisible ? TOAST_CLASSES.VISIBLE : TOAST_CLASSES.HIDDEN}`}
       role="alert"
     >
       <span>{message}</span>
