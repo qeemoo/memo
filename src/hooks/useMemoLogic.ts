@@ -1,10 +1,8 @@
+import { UseMemoProps } from '@/types';
+
 import { useCallback, useEffect, useState } from 'react';
 
 import { TOAST_MESSAGES } from '@/constants/messages';
-
-interface UseMemoProps {
-  showToast: (message: string, type: 'success' | 'error' | 'info') => void;
-}
 
 export const useMemoLogic = ({ showToast }: UseMemoProps) => {
   const [memoContent, setMemoContent] = useState<string>('');

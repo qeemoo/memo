@@ -1,18 +1,11 @@
 'use client';
 
+import { ConfirmationModalProps } from '@/types';
+
 import { useEffect, useRef } from 'react';
 
 import { CONFIRMATION_MODAL } from '@/constants/messages';
 import { CONFIRMATION_MODAL_CLASSES, MODAL_CLASSES } from '@/constants/styles';
-
-interface ConfirmationModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onConfirm: () => void;
-  message: string;
-  confirmText?: string;
-  cancelText?: string;
-}
 
 export default function ConfirmationModal({
   isOpen,

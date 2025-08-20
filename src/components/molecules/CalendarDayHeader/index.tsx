@@ -1,6 +1,4 @@
-interface CalendarDayHeaderProps {
-  date: Date;
-}
+import { CalendarDayHeaderProps } from '@/types';
 
 export default function CalendarDayHeader({ date }: CalendarDayHeaderProps) {
   const options: Intl.DateTimeFormatOptions = {

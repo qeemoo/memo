@@ -1,16 +1,11 @@
 'use client';
 
+import { MemoModalProps } from '@/types';
+
 import { useEffect, useRef } from 'react';
 
 import { MEMO_MODAL } from '@/constants/messages';
 import { MEMO_MODAL_CLASSES } from '@/constants/styles';
-
-interface MemoModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  memoContent: string;
-  setMemoContent: (content: string) => void;
-}
 
 export default function MemoModal({
   isOpen,

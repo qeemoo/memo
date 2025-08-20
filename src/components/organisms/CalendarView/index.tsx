@@ -1,28 +1,12 @@
-import { EventType } from '@/types';
+import { CalendarViewProps, EventType } from '@/types';
 
 import React from 'react';
 
-import ChevronDownIcon from '@/components/atoms/Icons/ChevronDownIcon';
-import ChevronRightIcon from '@/components/atoms/Icons/ChevronRightIcon';
-import LoadingSpinner from '@/components/atoms/Icons/LoadingSpinner';
+import { ChevronDownIcon, ChevronRightIcon, LoadingSpinner } from '@/components/atoms/Icons';
 import DateGroup from '@/components/molecules/DateGroup';
 
 import { ADD_MODAL, TOAST_MESSAGES } from '@/constants/messages';
 import { LAYOUT_CLASSES } from '@/constants/styles';
-
-interface CalendarViewProps {
-  events: EventType[];
-  loading: boolean;
-  error: string | null;
-  groupedEvents: Record<string, EventType[]>;
-  sortedDates: string[];
-  collapsedStates: Record<string, boolean>;
-  handleToggleCollapse: (dateKey: string) => void;
-  handleAddButtonClick: (date?: Date) => void;
-  handleEditClick: (event: EventType) => void;
-  handleDeleteEvent: (deletedId: string) => void;
-  handleToggleCompleteEvent: (id: string, newCompletedState: boolean) => void;
-}
 
 const CalendarView: React.FC<CalendarViewProps> = ({
   events,

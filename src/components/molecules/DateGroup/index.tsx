@@ -1,26 +1,14 @@
-import { EventType } from '@/types';
+import { DateGroupProps, EventType } from '@/types';
 
 import React from 'react';
 
 import AddEventInlineButton from '@/components/atoms/AddEventInlineButton';
-import ChevronDownIcon from '@/components/atoms/Icons/ChevronDownIcon';
-import ChevronRightIcon from '@/components/atoms/Icons/ChevronRightIcon';
+import { ChevronDownIcon, ChevronRightIcon } from '@/components/atoms/Icons';
 import CalendarDayHeader from '@/components/molecules/CalendarDayHeader';
 import EventListItem from '@/components/molecules/EventListItem';
 
 import { ADD_MODAL, TOAST_MESSAGES } from '@/constants/messages';
 import { LAYOUT_CLASSES } from '@/constants/styles';
-
-interface DateGroupProps {
-  dateKey: string;
-  groupedEvents: Record<string, EventType[]>;
-  collapsedStates: Record<string, boolean>;
-  handleToggleCollapse: (dateKey: string) => void;
-  handleAddButtonClick: (date?: Date) => void;
-  handleEditClick: (event: EventType) => void;
-  handleDeleteEvent: (deletedId: string) => void;
-  handleToggleCompleteEvent: (id: string, newCompletedState: boolean) => void;
-}
 
 const DateGroup: React.FC<DateGroupProps> = ({
   dateKey,

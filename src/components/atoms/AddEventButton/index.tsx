@@ -1,11 +1,10 @@
 'use client';
 
-import { ADD_EVENT_BUTTON_CLASSES } from '@/constants/styles';
+import { AddEventButtonProps } from '@/types';
 
-interface AddEventButtonProps {
-  onClick: () => void;
-  positioning?: 'fixed' | 'centered';
-}
+import { PlusIcon } from '@/components/atoms/Icons';
+
+import { ADD_EVENT_BUTTON_CLASSES } from '@/constants/styles';
 
 export default function AddEventButton({ onClick, positioning = 'fixed' }: AddEventButtonProps) {
   const buttonClasses =
@@ -20,16 +19,7 @@ export default function AddEventButton({ onClick, positioning = 'fixed' }: AddEv
         className={ADD_EVENT_BUTTON_CLASSES.BUTTON_BASE}
         aria-label="Add new event"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className={ADD_EVENT_BUTTON_CLASSES.ICON}
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth="2"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-        </svg>
+        <PlusIcon className={ADD_EVENT_BUTTON_CLASSES.ICON} />
       </button>
     </div>
   );

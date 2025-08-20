@@ -1,15 +1,11 @@
 'use client';
 
+import { ToastProps } from '@/types';
+
 import { useEffect, useState } from 'react';
 
 import { TOAST_TYPES } from '@/constants/messages';
 import { TOAST_CLASSES } from '@/constants/styles';
-
-interface ToastProps {
-  message: string;
-  type: 'success' | 'error' | 'info';
-  onClose: () => void;
-}
 
 export default function Toast({ message, type, onClose }: ToastProps) {
   const [isVisible, setIsVisible] = useState(true);

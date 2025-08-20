@@ -1,10 +1,8 @@
+import { UseDisplayStatesProps } from '@/types';
+
 import { useCallback, useEffect, useState } from 'react';
 
 import { TOAST_MESSAGES } from '@/constants/messages';
-
-interface UseDisplayStatesProps {
-  showToast: (message: string, type: 'success' | 'error' | 'info') => void;
-}
 
 export const useDisplayStates = ({ showToast }: UseDisplayStatesProps) => {
   const [collapsedStates, setCollapsedStates] = useState<Record<string, boolean>>({});

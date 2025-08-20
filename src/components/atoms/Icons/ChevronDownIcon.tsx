@@ -1,10 +1,8 @@
+import { IconProps } from '@/types';
+
 import React from 'react';
 
-interface ChevronDownIconProps {
-  className?: string;
-}
-
-const ChevronDownIcon: React.FC<ChevronDownIconProps> = ({ className }) => (
+const ChevronDownIcon: React.FC<IconProps> = ({ className }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     className={className}

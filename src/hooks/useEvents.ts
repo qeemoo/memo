@@ -1,12 +1,8 @@
-import { EventType } from '@/types';
+import { EventType, UseEventsProps } from '@/types';
 
 import { useCallback, useEffect, useState } from 'react';
 
 import { TOAST_MESSAGES } from '@/constants/messages';
-
-interface UseEventsProps {
-  showToast: (message: string, type: 'success' | 'error' | 'info') => void;
-}
 
 export const useEvents = ({ showToast }: UseEventsProps) => {
   const [events, setEvents] = useState<EventType[]>([]);

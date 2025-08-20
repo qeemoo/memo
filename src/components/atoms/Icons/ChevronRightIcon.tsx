@@ -1,10 +1,8 @@
+import { IconProps } from '@/types';
+
 import React from 'react';
 
-interface ChevronRightIconProps {
-  className?: string;
-}
-
-const ChevronRightIcon: React.FC<ChevronRightIconProps> = ({ className }) => (
+const ChevronRightIcon: React.FC<IconProps> = ({ className }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     className={className}
