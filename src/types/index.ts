@@ -15,6 +15,15 @@ export interface EventType {
   updatedAt: string;
 }
 
+export interface IWeeklyReport {
+  _id: string;
+  text: string;
+  dayOfWeek: number;
+  weekId: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface AddEventButtonProps {
   onClick: () => void;
   positioning?: 'fixed' | 'centered';
@@ -67,6 +76,11 @@ export interface CalendarViewProps {
   handleEditClick: (event: EventType) => void;
   handleDeleteEvent: (deletedId: string) => void;
   handleToggleCompleteEvent: (id: string, newCompletedState: boolean) => void;
+  handleWeeklyReportModalOpen: (dayOfWeek: number) => void;
+  weeklyReports: { [key: number]: string };
+  handleGenerateReport: () => void;
+  consolidatedReport: string;
+  showConsolidatedReport: boolean;
 }
 
 export interface ConfirmationModalProps {
@@ -109,12 +123,12 @@ export interface ToastState {
   type: 'success' | 'error' | 'info';
 }
 
-export interface IDayDisplayState extends Document {
+export interface IDayDisplayState {
   date: string; // YYYY-MM-DD format
   isCollapsed: boolean;
 }
 
-export interface IMemo extends Document {
+export interface IMemo {
   content: string;
   createdAt: Date;
   updatedAt: Date;

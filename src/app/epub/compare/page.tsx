@@ -3,7 +3,7 @@
 import { diffLines } from 'diff';
 import JSZip from 'jszip';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import DiffView from '@/components/molecules/DiffView';
 import Dropzone from '@/components/molecules/Dropzone';
@@ -23,6 +23,20 @@ const EpubComparePage = () => {
   const [comparisonResult, setComparisonResult] = useState<ComparisonResult[]>([]);
   const [activeDiff, setActiveDiff] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const diffsContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (diffsContainerRef.current && !diffsContainerRef.current.contains(event.target as Node)) {
+        setActiveDiff(null);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   useEffect(() => {
     if (file1 && file2) {
@@ -114,7 +128,7 @@ const EpubComparePage = () => {
       {isLoading && <p className="text-center mt-4">Comparing files...</p>}
 
       {comparisonResult.length > 0 && (
-        <div className="mt-8">
+        <div className="mt-8" ref={diffsContainerRef}>
           <h2 className="text-xl font-bold mb-4">Differences Found:</h2>
           <div className="flex flex-col space-y-2">
             {comparisonResult.map(({ fileName, content1, content2, diffCount }) => (
